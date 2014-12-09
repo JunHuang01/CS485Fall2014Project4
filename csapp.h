@@ -24,6 +24,16 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#define MC_GET 0
+#define MC_PUT 1
+#define MC_DEL 2
+#define MC_LIST 3
+
+#define MC_SUCC 0
+#define MC_ERR -1
+
+#define MC_MAX_FILE_SIZE 1000000
+
 
 /* Default file permissions are DEF_MODE & ~DEF_UMASK */
 /* $begin createmasks */
