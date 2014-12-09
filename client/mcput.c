@@ -52,7 +52,7 @@ int main(int argc, char** argv){
 
 	char buf[MC_MAX_FILE_SIZE];
 
-    if(Rio_readn(buf, MC_MAX_FILE_SIZE, 1, stdin) != NULL){
+    if(Fread(buf, MC_MAX_FILE_SIZE, MC_MAX_FILE_SIZE, stdin) != NULL){
     	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
     	if (res < 0)
     		printf("Error\n");
