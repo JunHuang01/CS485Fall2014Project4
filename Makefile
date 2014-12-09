@@ -9,8 +9,8 @@ SV_DIR := server
 
 ALL: clean $(PROGS)
 
-mycloud_server: $(SV_DIR)/mycloud_server.c $(INC_DIR)csapp.c
-	gcc $(SV_DIR)/mycloud_server.c $(INC_DIR)csapp.c -lpthread -g -o mycloud_server
+mycloud_server: $(SV_DIR)/mycloud_server.c $(INC_DIR)/csapp.c
+	gcc $(SV_DIR)/mycloud_server.c $(INC_DIR)/csapp.c -lpthread -g -o mycloud_server
 
 mcput: $(CL_DIR)/mcput.c $(INC_DIR)/csapp.c
 	gcc $(CL_DIR)/mcput.c $(INC_DIR)/csapp.c -lpthread -g -o mcput
