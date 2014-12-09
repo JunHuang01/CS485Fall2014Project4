@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-	if(argc < 4 && argc > 5)
+	if(argc < 4 || argc > 5)
 	{
 		fprintf(stderr, "Usage: %s <MachineName> <TCPport> <SecretKey> <Filename> \n", argv[0] );
 	}
