@@ -52,7 +52,11 @@ int main(int argc, char** argv){
 
 	char buf[MC_MAX_FILE_SIZE];
 
-    if(Fread(buf, MC_MAX_FILE_SIZE, MC_MAX_FILE_SIZE, stdin) > 0){
+	freopen(NULL,'rb',stdin);
+
+	int size;
+    if(size = Fread(buf, 1,MC_MAX_FILE_SIZE , stdin) > 0){
+    	fprintf(stderr, "Read size of %d\n",size );
     	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
     	if (res < 0)
     		printf("Error\n");
