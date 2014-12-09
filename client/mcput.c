@@ -52,7 +52,7 @@ int main(int argc, char** argv){
 
 	char buf[MC_MAX_FILE_SIZE];
 
-	freopen(NULL,'rb',stdin);
+	freopen(NULL,"rb",stdin);
 
 	int size;
     if(size = Fread(buf, 1,MC_MAX_FILE_SIZE , stdin) > 0){
