@@ -852,16 +852,18 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     buf = (void*)Malloc(4);
     
     size_t bufLen = 4;
-    Rio_readnb(&rio,buf,bufLen );
+    if(Rio_readnb(&rio,buf,bufLen ) >=0)
+    {
 
     fprintf(stderr, "Finsiehd recv\n");
     unsigned int result = *((unsigned int *)buf);
 
     free(buf);
     
-    if (result == -1){
-        fprintf(stderr,"The operation have failed");
-        return -1;
+        if (result == -1){
+            fprintf(stderr,"The operation have failed");
+            return -1;
+        }
     }
     Close(clientfd);
     return 0;   
