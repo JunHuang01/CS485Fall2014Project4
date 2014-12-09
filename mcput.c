@@ -50,7 +50,8 @@ int main(int argc, char** argv){
 		fileNameLen++;
 	}
 
-
+	char buf[MC_MAX_FILE_SIZE];
+	
     if(Fgets(buf, MC_MAX_FILE_SIZE, stdin) != NULL){
     	mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
     }
