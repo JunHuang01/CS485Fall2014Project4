@@ -53,9 +53,9 @@ int main(int argc, char** argv){
 	char buf[MC_MAX_FILE_SIZE];
 
 	//freopen(NULL,"rb",stdin);
-	rio_t rio;
-	Rio_readinitb(&rio,STDIN_FILENO);
-    if(Rio_readnb(&rio, buf, MC_MAX_FILE_SIZE ) > 0){
+	SET_BINARY(fileno(stdin));
+
+    if(Fread(buf,MC_MAX_FILE_SIZE,1 ,stdin) > 0){
     	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
     	if (res < 0)
     		printf("Error\n");
