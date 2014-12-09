@@ -12,14 +12,14 @@ int main(int argc, char** argv){
 		return -1;
 	}
 	else if (argc == 4){
-		MachineName = "127.0.0.1";
-
+		
 		fileNameLen = strlen(argv[3]);
 		if (fileNameLen > MC_MAX_FILE_NAME_SIZE){
 			fprintf(stderr, "File name is too long, max length is %d\n",MC_MAX_FILE_NAME_SIZE);
 			return -1;
 		}
 
+		strcpy(MachineName,"127.0.0.1");
 		TCPport = atoi(argv[1]);
 		SecretKey = atoi(argv[2]);
 		strncpy(Filename,argv[3],MC_MAX_FILE_NAME_SIZE);
