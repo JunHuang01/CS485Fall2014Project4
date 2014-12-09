@@ -846,7 +846,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     Rio_writen(clientfd, sendData, sendLen);
     
     free(sendData);
-    
+    fprintf(stderr, "Finsiehd send\n");
     void* buf;
     
     buf = (void*)Malloc(4);
@@ -854,6 +854,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     size_t bufLen = 4;
     Rio_readn(clientfd,buf,bufLen );
 
+    fprintf(stderr, "Finsiehd recv\n");
     unsigned int result = *((unsigned int *)buf);
 
     free(buf);
