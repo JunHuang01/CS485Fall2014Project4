@@ -1,0 +1,6 @@
+*.o
+mcget
+mcput
+mcdel
+mclist
+mycloud_server
