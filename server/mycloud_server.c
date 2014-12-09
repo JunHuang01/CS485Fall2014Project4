@@ -13,12 +13,13 @@ void echo(int connfd){
 
     Rio_readinitb(&rio, connfd);
     fprintf(stderr,"Server Started reading\n");
-    n = Rio_readnb(&rio, buf, max_size);//line:netp:echo:eof
+    if(n = Rio_readnb(&rio, buf, max_size) > 0){//line:netp:echo:eof
 	printf("server received %d bytes\n", (int)n);
 
     int res = -1;
     memcpy(buf2,&res,sizeof(int));
     Rio_writen(connfd, buf2, 4);
+	}
 }
 
 
