@@ -9,6 +9,15 @@ ALL: clean $(PROGS)
 mcput: mcput.c csapp.c
 	gcc mcput.c csapp.c -lpthread -g -o mcput
 
+mcget: mcget.c csapp.c
+	gcc mcget.c csapp.c -lpthread -g -o mcget
+
+mcdel: mcdel.c csapp.c
+	gcc mcdel.c csapp.c -lpthread -g -o mcdel
+
+mclist: mclist.c csapp.c
+	gcc mclist.c csapp.c -lpthread -g -o mclist
+
 clean:
 	rm -f *.o $(PROGS)
 
