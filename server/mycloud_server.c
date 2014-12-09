@@ -11,8 +11,8 @@ int echo(int connfd){
     memcpy(buf,&res,sizeof(int));
 
     Rio_readinitb(&rio, connfd);
-    while((n = Rio_readn(&rio, buf, MC_MAX_FILE_SIZE)) != 0) { //line:netp:echo:eof
-	printf("server received %d bytes\n", n);
+    while((n = Rio_readn(connfd, buf, MC_MAX_FILE_SIZE)) != 0) { //line:netp:echo:eof
+	printf("server received %d bytes\n", (int)n);
 	Rio_writen(connfd, buf, 4);
     }
 }
