@@ -11,6 +11,7 @@ void echo(int connfd){
     
 
     Rio_readinitb(&rio, connfd);
+    fprintf(stderr,"Server Started reading\n");
     n = Rio_readn(connfd, buf, MC_MAX_FILE_SIZE);//line:netp:echo:eof
 	printf("server received %d bytes\n", (int)n);
 
