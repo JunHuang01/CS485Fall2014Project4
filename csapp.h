@@ -34,6 +34,9 @@
 
 #define MC_MAX_FILE_SIZE 1000000
 
+#define MC_MAX_FILE_NAME_SIZE 80
+#define MC_MAX_HOST_NAME_SIZE 40
+
 
 /* Default file permissions are DEF_MODE & ~DEF_UMASK */
 /* $begin createmasks */
