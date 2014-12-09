@@ -32,7 +32,7 @@ mcput_test:
 	@echo "===== Ended mcput test======"
 
 mcget_test:
-	@echo "===== Started mcget test"
+	@echo "===== Started mcget test======"
 	./mcget 0
 	./mcget 0 0 0 0 0 
 	./mcget $(Host) $(Port) $(SecreteKey) $(FileName)

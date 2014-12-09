@@ -51,6 +51,10 @@ int main(int argc, char** argv){
 	}
 
 
+    if(Fgets(buf, MC_MAX_FILE_SIZE, stdin) != NULL){
+    	mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
+    }
+
 	fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
 	return 0;
