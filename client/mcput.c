@@ -1,4 +1,4 @@
-#include "csapp.h"
+#include "../include/csapp.h"
 
 
 int main(int argc, char** argv){
@@ -50,6 +50,13 @@ int main(int argc, char** argv){
 		fileNameLen++;
 	}
 
+	char buf[MC_MAX_FILE_SIZE];
+
+    if(Fgets(buf, MC_MAX_FILE_SIZE, stdin) != NULL){
+    	res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
+    	if (res < 0)
+    		printf("Error\n");
+    }
 
 	fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 

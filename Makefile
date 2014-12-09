@@ -3,20 +3,22 @@ Host := 127.0.0.1
 Port= 8888
 SecreteKey = 12345
 FileName := MyFile
+INC_DIR := include
+CL_DIR := client
 
 ALL: clean $(PROGS)
 	
-mcput: mcput.c csapp.c
-	gcc mcput.c csapp.c -lpthread -g -o mcput
+mcput: $(CL_DIR)/mcput.c $(INC_DIR)/csapp.c
+	gcc $(CL_DIR)/mcput.c $(INC_DIR)/csapp.c -lpthread -g -o mcput
 
-mcget: mcget.c csapp.c
-	gcc mcget.c csapp.c -lpthread -g -o mcget
+mcget: $(CL_DIR)/mcget.c $(INC_DIR)/csapp.c
+	gcc $(CL_DIR)/mcget.c $(INC_DIR)/csapp.c -lpthread -g -o mcget
 
-mcdel: mcdel.c csapp.c
-	gcc mcdel.c csapp.c -lpthread -g -o mcdel
+mcdel: $(CL_DIR)/mcdel.c $(INC_DIR)/csapp.c
+	gcc $(CL_DIR)/mcdel.c $(INC_DIR)/csapp.c -lpthread -g -o mcdel
 
-mclist: mclist.c csapp.c
-	gcc mclist.c csapp.c -lpthread -g -o mclist
+mclist: $(CL_DIR)/mclist.c $(INC_DIR)/csapp.c
+	gcc $(CL_DIR)/mclist.c $(INC_DIR)/csapp.c -lpthread -g -o mclist
 
 clean:
 	rm -f *.o $(PROGS)
