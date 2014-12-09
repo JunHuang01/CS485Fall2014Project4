@@ -53,7 +53,7 @@ int main(int argc, char** argv){
 	char buf[MC_MAX_FILE_SIZE];
 
 	//freopen(NULL,"rb",stdin);
-	SET_BINARY(fileno(stdin));
+	setmode(fileno(stdin),O_BINARY);
 
     if(Fread(buf,MC_MAX_FILE_SIZE,1 ,stdin) > 0){
     	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
