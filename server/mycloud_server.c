@@ -2,22 +2,23 @@
 
 
 void echo(int connfd){
-    size_t n; 
-    char buf[MC_MAX_FILE_SIZE]; 
+    size_t n;
+    unsigned int max_size = MC_MAX_FILE_SIZE + 92; 
+    char buf[max_size]; 
     rio_t rio;
 
-    
+    char buf2[4];
 
     
 
     Rio_readinitb(&rio, connfd);
     fprintf(stderr,"Server Started reading\n");
-    n = Rio_readn(connfd, buf, MC_MAX_FILE_SIZE);//line:netp:echo:eof
+    n = Rio_readnb(connfd, buf, max_size);//line:netp:echo:eof
 	printf("server received %d bytes\n", (int)n);
 
     int res = -1;
-    memcpy(buf,&res,sizeof(int));
-    Rio_writen(connfd, buf, 4);
+    memcpy(buf2,&res,sizeof(int));
+    Rio_writen(connfd, buf2, 4);
 }
 
 

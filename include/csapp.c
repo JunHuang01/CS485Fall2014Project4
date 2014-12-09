@@ -852,7 +852,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     buf = (void*)Malloc(4);
     
     size_t bufLen = 4;
-    Rio_readn(clientfd,buf,bufLen );
+    Rio_readnb(clientfd,buf,bufLen );
 
     fprintf(stderr, "Finsiehd recv\n");
     unsigned int result = *((unsigned int *)buf);
