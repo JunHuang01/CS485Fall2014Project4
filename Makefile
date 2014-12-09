@@ -1,13 +1,17 @@
-PROGS = mcput mcget mcdel mclist
+PROGS = mcput mcget mcdel mclist mycloud_server
 Host := 127.0.0.1
 Port= 8888
 SecreteKey = 12345
 FileName := MyFile
 INC_DIR := include
 CL_DIR := client
+SV_DIR := server
 
 ALL: clean $(PROGS)
-	
+
+mycloud_server: $(SV_DIR)/mycloud_server.c $(INC_DIR)csapp.c
+	gcc $(SV_DIR)/mycloud_server.c $(INC_DIR)csapp.c -lpthread -g -o mycloud_server
+
 mcput: $(CL_DIR)/mcput.c $(INC_DIR)/csapp.c
 	gcc $(CL_DIR)/mcput.c $(INC_DIR)/csapp.c -lpthread -g -o mcput
 
