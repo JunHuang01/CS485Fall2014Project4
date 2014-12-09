@@ -54,7 +54,7 @@ int main(int argc, char** argv){
 
 	//freopen(NULL,"rb",stdin);
 	rio_t rio;
-	Rioreadinitb(&rio,STDIN_FILENO);
+	Rio_readinitb(&rio,STDIN_FILENO);
     if(Rio_readnb(&rio, buf, MC_MAX_FILE_SIZE ) > 0){
     	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
     	if (res < 0)
