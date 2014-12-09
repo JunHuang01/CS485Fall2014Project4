@@ -1,7 +1,7 @@
 #include "../include/csapp.h"
 
 
-int echo(int connfd){
+void echo(int connfd){
     size_t n; 
     char buf[MC_MAX_FILE_SIZE]; 
     rio_t rio;
