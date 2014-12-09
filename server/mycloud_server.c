@@ -3,17 +3,20 @@
 
 int echo(int connfd){
     size_t n; 
-    char buf[4]; 
+    char buf[MC_MAX_FILE_SIZE]; 
     rio_t rio;
 
-    int res = -1;
+    
 
-    memcpy(buf,&res,sizeof(int));
+    
 
     Rio_readinitb(&rio, connfd);
-    n = Rio_readn(connfd, buf, MC_MAX_FILE_SIZE); //line:netp:echo:eof
+    n = Rio_readn(connfd, buf, MC_MAX_FILE_SIZE);//line:netp:echo:eof
 	printf("server received %d bytes\n", (int)n);
-	Rio_writen(connfd, buf, 4);
+
+    int res = -1;
+    memcpy(buf,&res,sizeof(int));
+    Rio_writen(connfd, buf, 4);
 }
 
 
