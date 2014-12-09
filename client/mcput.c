@@ -53,7 +53,7 @@ int main(int argc, char** argv){
 	char buf[MC_MAX_FILE_SIZE];
 
     if(Fgets(buf, MC_MAX_FILE_SIZE, stdin) != NULL){
-    	res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
+    	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
     	if (res < 0)
     		printf("Error\n");
     }
