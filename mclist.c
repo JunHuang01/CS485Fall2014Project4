@@ -9,7 +9,7 @@ int main(int argc, char** argv){
 	int hostLen, fileNameLen;
 	if(argc < 3 || argc > 4){
 		fprintf(stderr, "Usage: %s <MachineName> <TCPport> <SecretKey> <Filename> \n", argv[0] );
-		return -1;
+		return 0;
 	}
 	else if (argc == 3){
 		strcpy(MachineName,"127.0.0.1");
@@ -22,7 +22,7 @@ int main(int argc, char** argv){
 		if (hostLen > MC_MAX_HOST_NAME_SIZE)
 		{
 			fprintf(stderr, "Host name is too long, max length is %d\n",MC_MAX_HOST_NAME_SIZE);
-			return -1;
+			return 0;
 		}
 
 		strncpy(MachineName,argv[1],MC_MAX_HOST_NAME_SIZE);
