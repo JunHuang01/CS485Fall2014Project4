@@ -7,7 +7,7 @@ FileName := MyFile
 ALL: clean $(PROGS)
 	
 mcput: mcput.c csapp.c
-	gcc mcput.c csapp.c -g -o mcput
+	gcc mcput.c csapp.c -lpthread -g -o mcput
 
 clean:
 	rm -f *.o $(PROGS)
