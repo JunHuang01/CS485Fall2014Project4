@@ -892,7 +892,6 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 #endif
         return -1;
     }
-    }
     Close(clientfd);
     Free(sendData);
     Free(buf);
