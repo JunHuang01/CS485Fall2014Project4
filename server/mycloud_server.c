@@ -145,13 +145,13 @@ void echo(int connfd,unsigned int secretKey){
 		}
 	}
 
+	char bufErr[MC_NUM_SIZE];
 
 	switch(result){
 		case MC_SUCC:
 			printf("Operation Status = success\n");
 			break;
 		default:
-			char bufErr[MC_NUM_SIZE];
 		    netByte = htonl(result);
     		memcpy(&bufErr,&netByte,MC_NUM_SIZE);
     		Rio_writen(connfd, bufErr, MC_NUM_SIZE);
