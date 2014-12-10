@@ -134,16 +134,16 @@ void echo(int connfd,unsigned int secretKey){
 	
 	switch(requestType){
 	case MC_PUT:
-		result = putRequest(&rio,connfd);
+		result = putRequest(&rio,connfd,access);
 		break;
 	case MC_GET:
-		result = getRequest(&rio,connfd);
+		result = getRequest(&rio,connfd,access);
 		break;
 	case MC_DEL:
-		result = delRequest(&rio,connfd);
+		result = delRequest(&rio,connfd,access);
 		break;
 	case MC_LIST:
-		result = listRequest(&rio,connfd);
+		result = listRequest(&rio,connfd,access);
 		break;
 	default:
 		result = MC_ERR;
