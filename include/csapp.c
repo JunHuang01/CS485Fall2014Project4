@@ -847,7 +847,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
 
     sendLen = MC_MAX_FILE_NAME_SIZE + MC_NUM_SIZE;
-    sendData = (char*)Realloc(sendLen);
+    sendData = (char*)Realloc(sendData,sendLen);
     
     memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
     pSendData += MC_MAX_FILE_NAME_SIZE;
@@ -873,7 +873,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     fprintf(stderr, "Finsiehd send\n");
     void* buf;
     
-    buf = (void*)Calloc(MC_NUM_SIZE);
+    buf = (void*)Malloc(MC_NUM_SIZE);
     
 
     if(Rio_readnb(&rio,buf,MC_NUM_SIZE ) == MC_NUM_SIZE)
