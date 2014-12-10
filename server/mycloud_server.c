@@ -157,6 +157,7 @@ void echo(int connfd,unsigned int secretKey){
 			printf("Operation Status = success\n");
 			break;
 		case MC_ERR:
+			result = -1;
 		    netByte = htonl(result);
     		memcpy(&bufErr,&netByte,MC_NUM_SIZE);
     		Rio_writen(connfd, bufErr, MC_NUM_SIZE);

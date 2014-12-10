@@ -888,7 +888,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     if (result == -1){
 #ifdef MC_DEBUG
-        fprintf(stderr,"The operation have failed");
+        fprintf(stderr,"The operation have failed\n");
 #endif
         return -1;
     }
