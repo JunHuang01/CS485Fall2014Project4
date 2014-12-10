@@ -848,10 +848,9 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     sendLen = MC_MAX_FILE_NAME_SIZE + MC_NUM_SIZE;
     sendData = (char*)Realloc(sendData,sendLen);
-    
+    pSendData = sendData;
     memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
     pSendData += MC_MAX_FILE_NAME_SIZE;
-
 
     
     netByte = htonl(datalen);

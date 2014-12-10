@@ -50,11 +50,12 @@ int main(int argc, char** argv){
 		fileNameLen++;
 	}
 
-	char * buf = (char*)Malloc(MC_MAX_FILE_SIZE);
+	char buf[MC_MAX_FILE_SIZE];
 
 	unsigned int datalen;
 
     if(datalen = Fread(&buf,1,MC_MAX_FILE_SIZE ,stdin) >= 0){
+    	fprintf(stderr, "The data length is %u \n",datalen );
     	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , datalen);
     	if (res < 0)
     		printf("Error\n");
