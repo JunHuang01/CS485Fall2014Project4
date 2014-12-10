@@ -846,6 +846,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     Rio_writen(clientfd,sendData,sendLen);
 
     Free(sendData);
+    sendData =NULL;
 
     sendLen = MC_MAX_FILE_NAME_SIZE + MC_NUM_SIZE;
     sendData = (char*)Malloc(sendLen);
@@ -861,8 +862,8 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     
     Rio_writen(clientfd, sendData, sendLen);
 
-    free(sendData);
-
+    Free(sendData);
+    sendData = NULL;
 
 
     //memcpy(pSendData,data,datalen);
@@ -884,7 +885,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     netByte = *((unsigned int *)buf);
 
     unsigned int result = ntohl(netByte);
-    free(buf);
+    Free(buf);
     
         if (result == -1){
             fprintf(stderr,"The operation have failed");
