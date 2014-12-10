@@ -52,14 +52,14 @@ int main(int argc, char** argv){
 
 	char buf[MC_MAX_FILE_SIZE];
 
-	unsigned int datalen;
+	size_t datalen;
 
-    if(datalen = Fread(&buf,1,MC_MAX_FILE_SIZE ,stdin) >= 0){
-    	fprintf(stderr, "The data length is %u \n",datalen );
-    	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , datalen);
-    	if (res < 0)
-    		printf("Error\n");
-    }
+    datalen = Fread(buf,sizeof(char),MC_MAX_FILE_SIZE ,stdin)
+	fprintf(stderr, "The data length is %u \n",datalen );
+	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , (unsigned int)datalen);
+	if (res < 0)
+		printf("Error\n");
+
 
 	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
