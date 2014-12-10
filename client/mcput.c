@@ -37,7 +37,7 @@ int main(int argc, char** argv){
 
 		fileNameLen = strlen(argv[4]);
 
-		if (fileNameLen > MC_MAX_FILE_NAME_SIZE){
+		if (fileNameLen > MC_MAX_FILE_NAME_SIZE-1){
 			fprintf(stderr, "File name is too long, max length is %d\n",MC_MAX_FILE_NAME_SIZE);
 			return 0;
 		}
@@ -52,15 +52,15 @@ int main(int argc, char** argv){
 
 	char buf[MC_MAX_FILE_SIZE];
 
-	freopen(NULL,"rb",stdin);
+	unsigned int datalen;
 
-    if(Fread(buf,1,MC_MAX_FILE_SIZE ,stdin) >= 0){
-    	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , strlen(buf));
+    if(datalen = Fread(buf,1,MC_MAX_FILE_SIZE ,stdin) >= 0){
+    	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , datalen;
     	if (res < 0)
     		printf("Error\n");
     }
 
-	fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
+	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
 	return 0;
 }

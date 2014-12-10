@@ -38,6 +38,9 @@
 #define MC_MAX_HOST_NAME_SIZE 40
 
 
+#define MC_NUM_SIZE 4
+
+
 /* Default file permissions are DEF_MODE & ~DEF_UMASK */
 /* $begin createmasks */
 #define DEF_MODE   S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH
@@ -59,6 +62,13 @@ typedef struct {
     char rio_buf[RIO_BUFSIZE]; /* internal buffer */
 } rio_t;
 /* $end rio_t */
+
+struct MC_NODE{
+	char FileData[MC_MAX_FILE_SIZE];
+	char Filename[MC_MAX_FILE_NAME_SIZE];
+	unsigned int datalen;
+	struct MC_NODE * next;
+};
 
 /* External variables */
 extern int h_errno;    /* defined by BIND for DNS errors */ 

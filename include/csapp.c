@@ -815,7 +815,8 @@ int Open_listenfd(int port)
 int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char *data, unsigned int datalen){
 
     int clientfd;
-        
+    
+    unsigned int netByte;    
     rio_t rio;
 
     clientfd = Open_clientfd(MachineName,TCPport);
@@ -824,40 +825,65 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     
     char* sendData;
 
-    int sendLen = 92+datalen;
+    unsigned int sendLen;
 
+    //send 8 byte key + req
+    sendLen = MC_NUM_SIZE*2;
     sendData = (char*)Malloc(sendLen);
-    
+
+
+    netByte = htonl(SecretKey);
     char* pSendData = sendData;
-    memcpy(pSendData,&SecretKey,4);
-    pSendData += 4;
+    memcpy(pSendData,&netByte,MC_NUM_SIZE);
+    pSendData += MC_NUM_SIZE;
     
     unsigned int requestType = MC_PUT;
-    memcpy(pSendData,&requestType,4);
-    pSendData +=4;
+
+    netByte = htonl(requestType);
+    memcpy(pSendData,&netByte,MC_NUM_SIZE);
+    pSendData +=MC_NUM_SIZE;
+
+    Rio_writen(clientfd,sendData,sendLen);
+
+    Free(sendData);
+
+    sendLen = MC_FILE_NAME_SIZE + MC_NUM_SIZE;
+    sendData = (char*)Malloc(sendLen);
     
-    memcpy(pSendData,Filename,80);
-    pSendData += 80;
+    memcpy(pSendData,Filename,MC_FILE_NAME_SIZE);
+    pSendData += MC_FILE_NAME_SIZE;
+
+
     
-    memcpy(pSendData,&datalen,4);
-    memcpy(pSendData,data,datalen);
+    netByte = htonl(datalen);
+
+    memcpy(pSendData,&netByte,MC_NUM_SIZE);
     
-     
     Rio_writen(clientfd, sendData, sendLen);
+
+    free(sendData)
+
+
+
+    //memcpy(pSendData,data,datalen);
     
-    free(sendData);
+     Rio_writen(clientfd, data,datalen);
+    
+    
+    
     fprintf(stderr, "Finsiehd send\n");
     void* buf;
     
-    buf = (void*)Malloc(4);
+    buf = (void*)Malloc(MC_NUM_SIZE);
     
-    size_t bufLen = 4;
-    if(Rio_readnb(&rio,buf,bufLen ) >=0)
+
+    if(Rio_readnb(&rio,buf,MC_NUM_SIZE ) == MC_NUM_SIZE)
     {
 
     fprintf(stderr, "Finsiehd recv\n");
-    unsigned int result = *((unsigned int *)buf);
+    netByte = *((unsigned int *)buf);
 
+    unsigned int result = ntohl(netByte)
     free(buf);
     
         if (result == -1){

@@ -1,31 +1,142 @@
 #include "../include/csapp.h"
 
+struct MC_NODE * MC_HEAD;
 
-void echo(int connfd){
+int delRequest(rio_t* rio,int connfd)
+{
+	return MC_SUCC;
+}
+
+int listRequest(rio_t* rio,int connfd)
+{
+
+	return MC_SUCC;
+}
+
+
+int getRequest(rio_t* rio,int connfd)
+{
+
+	return MC_SUCC;
+}
+
+
+int putRequest(rio_t* rio,int connfd)
+{
+
+	unsigned int result = MC_SUCC;
+
+	char buf2[MC_NUM_SIZE];
+    netByte = htonl(result);
+    memcpy(buf2,&netByte,sizeof(int));
+    Rio_writen(connfd, buf2, MC_NUM_SIZE);
+	return result;
+}
+
+void printRequestType(int reqType){
+	switch(reqType){
+		case MC_PUT:
+			printf("Request Type = put\n");
+			break;
+		case MC_GET:
+			printf("Request Type = get\n");
+			break;
+		case MC_DEL:
+			printf("Request Type = del\n");
+			break;
+		case MC_LIST:
+			printf("Request Type = list\n");
+			break;
+		default:
+			break;
+	}
+}
+
+//valid access return 0, otherwise no access
+int isValidAccess(unsigned int userKey, unsigned int sysKey){
+
+	return userKey - sysKey;
+}
+
+void echo(int connfd,unsigned int secretKey){
     size_t n;
-    unsigned int max_size = MC_MAX_FILE_SIZE + 92; 
+ 
     char buf[max_size]; 
     rio_t rio;
 
-    char buf2[4];
-
     
+
+    unsigned int netByte,result = 0;
 
     Rio_readinitb(&rio, connfd);
     fprintf(stderr,"Server Started reading\n");
-    if(n = Rio_readnb(&rio, buf, max_size) >= 0){//line:netp:echo:eof
+
+    unsigned int recvLen = MC_NUM_SIZE * 2;
+
+
+    //Recieve Access Key and Request type 8 byte.
+    if(n = Rio_readnb(&rio, buf, recvLen) == recvLen){//line:netp:echo:eof
 	printf("server received %d bytes\n", (int)n);
 
-    int res = -1;
-    memcpy(buf2,&res,sizeof(int));
-    Rio_writen(connfd, buf2, 4);
+
+	char* pBuf = buf;
+
+	memcpy(&netByte,pBuf,MC_NUM_SIZE);
+	pBuf += MC_NUM_SIZE;
+	unsigned int userKey = ntohl(netByte);
+	memcpy(&netByte,pBuf,MC_NUM_SIZE);
+	unsigned int requestType = ntohl(netByte);
+
+	printf("Secret Key = %u\n", userKey);
+	printRequestType(requestType);
+
+
+
+	if(!isValidAccess(userKey,secretKey))
+	{
+		switch(requestType){
+		case MC_PUT:
+			result = putRequest(&rio,connfd);
+			break;
+		case MC_GET:
+			result = getRequest(&rio,connfd);
+			break;
+		case MC_DEL:
+			result = delRequest(&rio,connfd);
+			break;
+		case MC_LIST:
+			result = listRequest(&rio,connfd);
+			break;
+		default:
+			result = MC_ERR;
+			break;
+		}
+	}
+	else
+	{
+		result = MC_ERR;
+	}
+
+
+	switch(result){
+		case MC_SUCC:
+			printf("Operation Status = success\n");
+			break;
+		default:
+			printf("Operation Status = error\n");
+			break;
+	}
+
+	
 	}
 }
 
 
 int main(int argc, char **argv) 
 {
+	MC_HEAD = NULL;
     int listenfd, connfd, port, clientlen;
+    unsigned int secretKey;
     struct sockaddr_in clientaddr;
     struct hostent *hp;
     char *haddrp;
@@ -34,6 +145,7 @@ int main(int argc, char **argv)
 	exit(0);
     }
     port = atoi(argv[1]);
+    secretKey = atoi(argv[2]);
 
     listenfd = Open_listenfd(port);
     while (1) {
@@ -46,7 +158,7 @@ int main(int argc, char **argv)
 	haddrp = inet_ntoa(clientaddr.sin_addr);
 	printf("server connected to %s (%s)\n", hp->h_name, haddrp);
 
-	echo(connfd);
+	echo(connfd,secretKey);
 	Close(connfd);
     }
     exit(0);
