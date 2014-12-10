@@ -24,6 +24,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#define MC_DEBUG 0
+
 #define MC_GET 0
 #define MC_PUT 1
 #define MC_DEL 2

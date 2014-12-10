@@ -70,14 +70,18 @@ void echo(int connfd,unsigned int secretKey){
     unsigned int netByte,result = 0;
 
     Rio_readinitb(&rio, connfd);
+#ifndef MC_DEBUG
     fprintf(stderr,"Server Started reading\n");
+#endif
 
     unsigned int recvLen = MC_NUM_SIZE * 2;
 
 
     //Recieve Access Key and Request type 8 byte.
     if(n = Rio_readnb(&rio, buf, recvLen) == recvLen){//line:netp:echo:eof
-	printf("server received %d bytes\n", (int)n);
+#ifndef MC_DEBUG
+	fprintf(stderr,"server received %d bytes\n", (int)n);
+#endif
 
 
 	char* pBuf = buf;

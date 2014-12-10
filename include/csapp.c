@@ -867,8 +867,9 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
      Rio_writen(clientfd, data,datalen);
     
     
-    
+#ifdef MC_DEBUG
     fprintf(stderr, "Finsiehd send\n");
+#endif
     void* buf;
     
     buf = (void*)Malloc(MC_NUM_SIZE);
@@ -877,14 +878,18 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     if(Rio_readnb(&rio,buf,MC_NUM_SIZE ) == MC_NUM_SIZE)
     {
 
+#ifndef MC_DEBUG
     fprintf(stderr, "Finsiehd recv\n");
+#endif
     netByte = *((unsigned int *)buf);
 
     unsigned int result = ntohl(netByte);
     
 
     if (result == -1){
+#ifndef MC_DEBUG
         fprintf(stderr,"The operation have failed");
+#endif
         return -1;
     }
     }
