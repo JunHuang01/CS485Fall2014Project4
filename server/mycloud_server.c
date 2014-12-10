@@ -60,7 +60,7 @@ int isValidAccess(unsigned int userKey, unsigned int sysKey){
 
 void echo(int connfd,unsigned int secretKey){
     size_t n;
- 
+ 	unsigned int max_size = MC_NUM_SIZE *2;
     char buf[max_size]; 
     rio_t rio;
 
