@@ -55,7 +55,7 @@ int main(int argc, char** argv){
 	unsigned int datalen;
 
     if(datalen = Fread(&buf,1,MC_MAX_FILE_SIZE ,stdin) >= 0){
-    	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, &buf , datalen);
+    	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , datalen);
     	if (res < 0)
     		printf("Error\n");
     }
