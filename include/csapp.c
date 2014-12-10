@@ -829,7 +829,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     //send 8 byte key + req
     sendLen = MC_NUM_SIZE*2;
-    sendData = (char*)Calloc(sendLen);
+    sendData = (char*)Malloc(sendLen);
 
 
     netByte = htonl(SecretKey);
