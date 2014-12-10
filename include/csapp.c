@@ -868,23 +868,23 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     
     
 #ifdef MC_DEBUG
-    fprintf(stderr, "Finsiehd send\n");
+    fprintf(stderr, "Finshed send\n");
 #endif
     void* buf;
     
     buf = (void*)Malloc(MC_NUM_SIZE);
     
 
-    if(Rio_readnb(&rio,buf,MC_NUM_SIZE ) == MC_NUM_SIZE)
-    {
+    Rio_readnb(&rio,buf,MC_NUM_SIZE )
 
-#ifndef MC_DEBUG
-    fprintf(stderr, "Finsiehd recv\n");
-#endif
     netByte = *((unsigned int *)buf);
 
     unsigned int result = ntohl(netByte);
-    
+
+
+#ifndef MC_DEBUG
+    fprintf(stderr, "Finsiehd recv and result was %u\n",result);
+#endif    
 
     if (result == -1){
 #ifndef MC_DEBUG
