@@ -882,12 +882,12 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     unsigned int result = ntohl(netByte);
 
 
-#ifndef MC_DEBUG
+#ifdef MC_DEBUG
     fprintf(stderr, "Finsiehd recv and result was %u\n",result);
 #endif    
 
     if (result == -1){
-#ifndef MC_DEBUG
+#ifdef MC_DEBUG
         fprintf(stderr,"The operation have failed");
 #endif
         return -1;
