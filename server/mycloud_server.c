@@ -46,7 +46,7 @@ int putRequest(rio_t* rio,int connfd)
 
 	currNode->next = MC_HEAD;
 
-	currNode->datalen = datalen;
+	currNode->datalen = dataLen;
 
 	memcpy(currNode->Filedata,uFiledata,dataLen);
 

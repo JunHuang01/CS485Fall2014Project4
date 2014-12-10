@@ -66,7 +66,7 @@ typedef struct {
 /* $end rio_t */
 
 struct MC_NODE{
-	char FileData[MC_MAX_FILE_SIZE];
+	char Filedata[MC_MAX_FILE_SIZE];
 	char Filename[MC_MAX_FILE_NAME_SIZE];
 	unsigned int datalen;
 	struct MC_NODE * next;
