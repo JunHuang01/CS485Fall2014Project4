@@ -25,6 +25,7 @@ int putRequest(rio_t* rio,int connfd)
 {
 
 	unsigned int result = MC_SUCC;
+	unsigned int netByte;
 
 	char buf2[MC_NUM_SIZE];
     netByte = htonl(result);
