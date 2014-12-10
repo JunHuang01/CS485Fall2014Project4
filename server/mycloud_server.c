@@ -55,7 +55,7 @@ int putRequest(rio_t* rio,int connfd)
 	MC_HEAD = currNode;
 
     netByte = htonl(result);
-    memcpy(buf,&netByte,sizeof(int));
+    memcpy(&buf,&netByte,MC_NUM_SIZE);
     Rio_writen(connfd, buf, MC_NUM_SIZE);
 	return result;
 }
