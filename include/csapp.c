@@ -847,11 +847,11 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     Free(sendData);
 
-    sendLen = MC_FILE_NAME_SIZE + MC_NUM_SIZE;
+    sendLen = MC_MAX_FILE_NAME_SIZE + MC_NUM_SIZE;
     sendData = (char*)Malloc(sendLen);
     
-    memcpy(pSendData,Filename,MC_FILE_NAME_SIZE);
-    pSendData += MC_FILE_NAME_SIZE;
+    memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
+    pSendData += MC_MAX_FILE_NAME_SIZE;
 
 
     
@@ -861,7 +861,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     
     Rio_writen(clientfd, sendData, sendLen);
 
-    free(sendData)
+    free(sendData);
 
 
 
@@ -883,7 +883,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     fprintf(stderr, "Finsiehd recv\n");
     netByte = *((unsigned int *)buf);
 
-    unsigned int result = ntohl(netByte)
+    unsigned int result = ntohl(netByte);
     free(buf);
     
         if (result == -1){
