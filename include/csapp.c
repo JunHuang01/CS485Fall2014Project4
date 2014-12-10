@@ -860,8 +860,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     
     Rio_writen(clientfd, sendData, sendLen);
 
-    Free(sendData);
-    sendData = NULL;
+    
 
 
     //memcpy(pSendData,data,datalen);
@@ -883,7 +882,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     netByte = *((unsigned int *)buf);
 
     unsigned int result = ntohl(netByte);
-    Free(buf);
+    
 
     if (result == -1){
         fprintf(stderr,"The operation have failed");
@@ -891,6 +890,8 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     }
     }
     Close(clientfd);
+    Free(sendData);
+    Free(buf);
     return 0;   
 }
 /* $end csapp.c */
