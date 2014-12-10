@@ -23,14 +23,40 @@ int getRequest(rio_t* rio,int connfd)
 
 int putRequest(rio_t* rio,int connfd)
 {
-
+	char buf[MC_NUM_SIZE];
 	unsigned int result = MC_SUCC;
 	unsigned int netByte;
+	unsigned int dataLen;
 
-	char buf2[MC_NUM_SIZE];
+	char uFiledata[MC_MAX_FILE_SIZE];
+	char uFilename[MC_MAX_FILE_NAME_SIZE];
+
+	Rio_readnb(&rio, uFilename, MC_MAX_FILE_NAME_SIZE);
+
+	printf("Filename = %s\n",uFilename );
+	Rio_readnb(&rio, buf, MC_NUM_SIZE);
+
+	memcpy(&netByte,buf,MC_NUM_SIZE);
+
+	dataLen = ntohl(netByte);
+
+	Rio_readnb(&rio, uFiledata, dataLen);
+
+	MC_NODE * currNode = (struct MC_NODE *)Malloc(sizeof(struct MC_NODE));
+
+	currNode->next = MC_HEAD;
+
+	currNode->datalen = datalen;
+
+	memcpy(currNode->Filedata,uFiledata,dataLen);
+
+	memcpy(currNode->Filename,uFilename,MC_MAX_FILE_NAME_SIZE);
+	
+	MC_HEAD = currNode;
+
     netByte = htonl(result);
-    memcpy(buf2,&netByte,sizeof(int));
-    Rio_writen(connfd, buf2, MC_NUM_SIZE);
+    memcpy(buf,&netByte,sizeof(int));
+    Rio_writen(connfd, buf, MC_NUM_SIZE);
 	return result;
 }
 
@@ -47,6 +73,7 @@ void printRequestType(int reqType){
 			break;
 		case MC_LIST:
 			printf("Request Type = list\n");
+			printf("Filename = NONE\n");
 			break;
 		default:
 			break;
@@ -161,9 +188,11 @@ int main(int argc, char **argv)
 	hp = Gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr, 
 			   sizeof(clientaddr.sin_addr.s_addr), AF_INET);
 	haddrp = inet_ntoa(clientaddr.sin_addr);
+#ifdef MC_DEBUG
 	printf("server connected to %s (%s)\n", hp->h_name, haddrp);
-
+#endif
 	echo(connfd,secretKey);
+	printf("--------------------------\n");
 	Close(connfd);
     }
     exit(0);
