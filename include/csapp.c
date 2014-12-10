@@ -829,7 +829,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     //send 8 byte key + req
     sendLen = MC_NUM_SIZE*2;
-    sendData = (char*)Malloc(sendLen);
+    sendData = (char*)Calloc(sendLen);
 
 
     netByte = htonl(SecretKey);
@@ -845,11 +845,9 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     Rio_writen(clientfd,sendData,sendLen);
 
-    Free(sendData);
-    sendData =NULL;
 
     sendLen = MC_MAX_FILE_NAME_SIZE + MC_NUM_SIZE;
-    sendData = (char*)Malloc(sendLen);
+    sendData = (char*)Realloc(sendLen);
     
     memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
     pSendData += MC_MAX_FILE_NAME_SIZE;
@@ -875,7 +873,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     fprintf(stderr, "Finsiehd send\n");
     void* buf;
     
-    buf = (void*)Malloc(MC_NUM_SIZE);
+    buf = (void*)Calloc(MC_NUM_SIZE);
     
 
     if(Rio_readnb(&rio,buf,MC_NUM_SIZE ) == MC_NUM_SIZE)
@@ -886,11 +884,11 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     unsigned int result = ntohl(netByte);
     Free(buf);
-    
-        if (result == -1){
-            fprintf(stderr,"The operation have failed");
-            return -1;
-        }
+
+    if (result == -1){
+        fprintf(stderr,"The operation have failed");
+        return -1;
+    }
     }
     Close(clientfd);
     return 0;   
