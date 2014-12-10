@@ -2,26 +2,26 @@
 
 struct MC_NODE * MC_HEAD;
 
-int delRequest(rio_t* rio,int connfd)
+int delRequest(rio_t* rio,int connfd,int access)
 {
 	return MC_SUCC;
 }
 
-int listRequest(rio_t* rio,int connfd)
-{
-
-	return MC_SUCC;
-}
-
-
-int getRequest(rio_t* rio,int connfd)
+int listRequest(rio_t* rio,int connfd,int access)
 {
 
 	return MC_SUCC;
 }
 
 
-int putRequest(rio_t* rio,int connfd)
+int getRequest(rio_t* rio,int connfd,int access)
+{
+
+	return MC_SUCC;
+}
+
+
+int putRequest(rio_t* rio,int connfd,int access)
 {
 	char buf[MC_NUM_SIZE];
 	unsigned int result = MC_SUCC;
@@ -42,22 +42,28 @@ int putRequest(rio_t* rio,int connfd)
 
 	Rio_readnb(rio, uFiledata, dataLen);
 
-	struct MC_NODE * currNode = (struct MC_NODE *)Malloc(sizeof(struct MC_NODE));
+	if(!access){
+		struct MC_NODE * currNode = (struct MC_NODE *)Malloc(sizeof(struct MC_NODE));
 
-	currNode->next = MC_HEAD;
+		currNode->next = MC_HEAD;
 
-	currNode->datalen = dataLen;
+		currNode->datalen = dataLen;
 
-	memcpy(currNode->Filedata,uFiledata,dataLen);
+		memcpy(currNode->Filedata,uFiledata,dataLen);
 
-	memcpy(currNode->Filename,uFilename,MC_MAX_FILE_NAME_SIZE);
-	
-	MC_HEAD = currNode;
+		memcpy(currNode->Filename,uFilename,MC_MAX_FILE_NAME_SIZE);
+		
+		MC_HEAD = currNode;
 
-    netByte = htonl(result);
-    memcpy(&buf,&netByte,MC_NUM_SIZE);
-    Rio_writen(connfd, buf, MC_NUM_SIZE);
-	return result;
+	    netByte = htonl(result);
+	    memcpy(&buf,&netByte,MC_NUM_SIZE);
+	    Rio_writen(connfd, buf, MC_NUM_SIZE);
+		return MC_SUCC;
+	}
+	else
+	{
+		return MC_ERR;
+	}
 }
 
 void printRequestType(int reqType){
@@ -122,27 +128,26 @@ void echo(int connfd,unsigned int secretKey){
 	printf("Secret Key = %u\n", userKey);
 	printRequestType(requestType);
 
+	int access = isValidAccess(userKey,secretKey);
 
-
-	if(!isValidAccess(userKey,secretKey))
-	{
-		switch(requestType){
-		case MC_PUT:
-			result = putRequest(&rio,connfd);
-			break;
-		case MC_GET:
-			result = getRequest(&rio,connfd);
-			break;
-		case MC_DEL:
-			result = delRequest(&rio,connfd);
-			break;
-		case MC_LIST:
-			result = listRequest(&rio,connfd);
-			break;
-		default:
-			result = MC_ERR;
-			break;
-		}
+	
+	
+	switch(requestType){
+	case MC_PUT:
+		result = putRequest(&rio,connfd);
+		break;
+	case MC_GET:
+		result = getRequest(&rio,connfd);
+		break;
+	case MC_DEL:
+		result = delRequest(&rio,connfd);
+		break;
+	case MC_LIST:
+		result = listRequest(&rio,connfd);
+		break;
+	default:
+		result = MC_ERR;
+		break;
 	}
 
 	char bufErr[MC_NUM_SIZE];
@@ -151,11 +156,13 @@ void echo(int connfd,unsigned int secretKey){
 		case MC_SUCC:
 			printf("Operation Status = success\n");
 			break;
-		default:
+		case MC_ERR:
 		    netByte = htonl(result);
     		memcpy(&bufErr,&netByte,MC_NUM_SIZE);
     		Rio_writen(connfd, bufErr, MC_NUM_SIZE);
 			printf("Operation Status = error\n");
+			break;
+		default:
 			break;
 	}
 
