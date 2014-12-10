@@ -31,18 +31,18 @@ int putRequest(rio_t* rio,int connfd)
 	char uFiledata[MC_MAX_FILE_SIZE];
 	char uFilename[MC_MAX_FILE_NAME_SIZE];
 
-	Rio_readnb(&rio, uFilename, MC_MAX_FILE_NAME_SIZE);
+	Rio_readnb(rio, uFilename, MC_MAX_FILE_NAME_SIZE);
 
 	printf("Filename = %s\n",uFilename );
-	Rio_readnb(&rio, buf, MC_NUM_SIZE);
+	Rio_readnb(rio, buf, MC_NUM_SIZE);
 
 	memcpy(&netByte,buf,MC_NUM_SIZE);
 
 	dataLen = ntohl(netByte);
 
-	Rio_readnb(&rio, uFiledata, dataLen);
+	Rio_readnb(rio, uFiledata, dataLen);
 
-	MC_NODE * currNode = (struct MC_NODE *)Malloc(sizeof(struct MC_NODE));
+	struct MC_NODE * currNode = (struct MC_NODE *)Malloc(sizeof(struct MC_NODE));
 
 	currNode->next = MC_HEAD;
 
