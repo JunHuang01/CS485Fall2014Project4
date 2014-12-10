@@ -875,7 +875,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     buf = (void*)Malloc(MC_NUM_SIZE);
     
 
-    Rio_readnb(&rio,buf,MC_NUM_SIZE )
+    Rio_readnb(&rio,buf,MC_NUM_SIZE );
 
     netByte = *((unsigned int *)buf);
 
