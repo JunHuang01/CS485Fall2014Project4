@@ -94,7 +94,7 @@ void echo(int connfd,unsigned int secretKey){
 
     
 
-    unsigned int netByte,result = 0;
+    unsigned int netByte,result = MC_ERR;
 
     Rio_readinitb(&rio, connfd);
 #ifndef MC_DEBUG
@@ -144,10 +144,6 @@ void echo(int connfd,unsigned int secretKey){
 			break;
 		}
 	}
-	else
-	{
-		result = MC_ERR;
-	}
 
 
 	switch(result){
@@ -155,6 +151,10 @@ void echo(int connfd,unsigned int secretKey){
 			printf("Operation Status = success\n");
 			break;
 		default:
+			char bufErr[MC_NUM_SIZE];
+		    netByte = htonl(result);
+    		memcpy(&bufErr,&netByte,MC_NUM_SIZE);
+    		Rio_writen(connfd, bufErr, MC_NUM_SIZE);
 			printf("Operation Status = error\n");
 			break;
 	}
