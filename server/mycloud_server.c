@@ -36,7 +36,7 @@ int getRequest(rio_t* rio,int connfd,int access)
 	Rio_readnb(rio, uFilename, MC_MAX_FILE_NAME_SIZE);
 	printf("Filename = %s\n",uFilename );
 
-	if(access){
+	if(!access){
 		struct MC_NODE * currNode = MC_HEAD;
 
 		while(currNode){
