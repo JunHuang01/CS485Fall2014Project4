@@ -26,7 +26,7 @@ int delRequest(rio_t* rio,int connfd,int access)
 					}
 					else
 					{
-						prevNode->nextNode = currNode->next;
+						prevNode->next = currNode->next;
 					}
 					
 					Free(currNode);
