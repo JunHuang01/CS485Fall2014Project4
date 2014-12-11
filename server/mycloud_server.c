@@ -19,6 +19,56 @@ int delRequest(rio_t* rio,int connfd,int access)
 
 int listRequest(rio_t* rio,int connfd,int access)
 {
+	char buf[MC_NUM_SIZE];
+	unsigned int result = MC_SUCC;
+	unsigned int netByte;
+	unsigned int dataLen;
+
+	if(!access){
+
+		netByte = htonl(result);
+		memcpy(buf,&netByte,MC_NUM_SIZE);
+		Rio_writen(connfd, buf, MC_NUM_SIZE);
+
+		struct MC_NODE * currNode = MC_HEAD;
+
+		unsigned int count = 0;
+		while(currNode){
+			count++;
+			currNode = currNode->next;
+		}
+
+		unsigned int listbuflen = count * MC_MAX_FILE_NAME_SIZE;
+		netByte = htonl(listbuflen);
+		memcpy(buf,&netByte,MC_NUM_SIZE);
+		Rio_writen(connfd, buf, MC_NUM_SIZE);
+
+
+		char * listbuf = (char*)Malloc(listbuflen);
+		char * pListbuf = listbuf;
+		currNode = MC_HEAD;
+		while(currNode){
+			count--;
+			memcpy(pListbuf,currNode->Filename,MC_MAX_FILE_NAME_SIZE);
+			pListbuf+=MC_MAX_FILE_NAME_SIZE;
+			currNode = currNode->next;
+		}	
+
+		Rio_writen(connfd, listbuf, listbuflen);		
+
+		Free(listbuf);
+
+		if(count){
+			return MC_ERR;
+		}
+		else
+		{
+			return MC_SUCC;
+		}
+	}
+	else
+		return MC_ERR;
+
 
 	return MC_SUCC;
 }

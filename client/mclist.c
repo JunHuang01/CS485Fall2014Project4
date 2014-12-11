@@ -29,9 +29,16 @@ int main(int argc, char** argv){
 		TCPport = atoi(argv[2]);
 		SecretKey = atoi(argv[3]);
 	}
+	unsigned int listbuflen;
+	char * listbuf = (char*)Malloc(MC_MAX_FILE_NAME_SIZE*1000);//limitation that we will be accepting at most 1000 files
+	int result = mycloud_listfiles(MachineName, TCPport, SecretKey, &listbuf,&listbuflen );
 
+	
+	Fwrite(listbuf,listbuflen,1,stdout);
+	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
-	fprintf(stderr, "%s %u %u \n", MachineName, TCPport, SecretKey);
-
+	if (result != 0)
+		printf("Error\n");
+	Free(listbuf);
 	return 0;
 }

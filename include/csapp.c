@@ -1053,7 +1053,13 @@ int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int Secr
 
     result = ntohl(netByte);
 
+    if(!result){
+        Rio_readnb(&rio,buf,MC_NUM_SIZE );
+        memcpy(&netByte,buf,MC_NUM_SIZE);
 
+        *listbuflen = ntohl(netByte);
+        Rio_readnb(&rio,*listbuf,*listbuflen);
+    }
     Close(clientfd);
     Free(buf);
 #ifdef MC_DEBUG
