@@ -33,7 +33,9 @@ int main(int argc, char** argv){
 	char * listbuf = (char*)Malloc(MC_MAX_FILE_NAME_SIZE*1000);//limitation that we will be accepting at most 1000 files
 	int result = mycloud_listfiles(MachineName, TCPport, SecretKey, &listbuf,&listbuflen );
 
-	
+#ifdef MC_DEBUG
+	fprintf(stderr, "The length of list is %u \n", listbuflen );
+#endif
 	Fwrite(listbuf,listbuflen,1,stdout);
 	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
