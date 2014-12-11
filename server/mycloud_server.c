@@ -14,6 +14,36 @@ int delRequest(rio_t* rio,int connfd,int access)
 	Rio_readnb(rio, uFilename, MC_MAX_FILE_NAME_SIZE);
 	printf("Filename = %s\n",uFilename );
 
+	if(!access){
+		struct MC_NODE * prevNode = NULL;
+		struct MC_NODE * currNode = MC_HEAD;
+
+		while(currNode){
+			if(!strcmp(currNode->Filename,uFilename)){
+					
+					if(prevNode == NULL){
+						MC_HEAD = currNode->next;
+					}
+					else
+					{
+						prevNode->nextNode = currNode->next;
+					}
+					
+					Free(currNode);
+
+					netByte = htonl(result);
+					memcpy(buf,&netByte,MC_NUM_SIZE);
+					Rio_writen(connfd, buf, MC_NUM_SIZE);
+
+					return MC_SUCC;
+			}
+			prevNode = currNode;
+			currNode = currNode->next;
+		}
+	}
+	else
+		return MC_ERR;
+
 	return MC_SUCC;
 }
 

@@ -50,8 +50,11 @@ int main(int argc, char** argv){
 		fileNameLen++;
 	}
 
+	int result = mycloud_delfile(MachineName, TCPport, SecretKey, Filename);
 
-	fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
+	if (result != 0)
+		printf("Error\n");
+	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
 	return 0;
 }
