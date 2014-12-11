@@ -906,7 +906,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     return MC_SUCC;   
 }
 
-int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char **data, unsigned int* datalen){
+int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char **data, unsigned int *datalen){
 
     unsigned int result = MC_SUCC;
     int clientfd;
@@ -1017,7 +1017,7 @@ int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
 }
 
-int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char **listbuf, int* listbuflen){
+int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char **listbuf, unsigned int *listbuflen){
     unsigned int result = MC_SUCC;
     int clientfd;
     

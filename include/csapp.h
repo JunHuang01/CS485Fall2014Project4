@@ -191,12 +191,9 @@ int Open_listenfd(int port);
 
 /*my cloud API calls*/
 int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char *data, unsigned int datalen);
-
-int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char *data, unsigned int* datalen);
-
+int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char **data, unsigned int *datalen);
 int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename);
-
-int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *listbuf, int* listbuflen);
+int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char **listbuf, unsigned int *listbuflen);
 
 #endif /* __CSAPP_H__ */
 /* $end csapp.h */
