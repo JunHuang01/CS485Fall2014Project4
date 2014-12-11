@@ -813,6 +813,7 @@ int Open_listenfd(int port)
 
 
 void sendKeyAndReqType(rio_t * rio,int clientfd, unsigned int SecretKey, unsigned int requestType){
+    unsigned int netByte;
     char* sendData;
 
     unsigned int sendLen;
