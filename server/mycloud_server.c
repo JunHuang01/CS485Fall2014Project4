@@ -40,11 +40,13 @@ int delRequest(rio_t* rio,int connfd,int access)
 			prevNode = currNode;
 			currNode = currNode->next;
 		}
+
+		return MC_ERR;
 	}
 	else
 		return MC_ERR;
 
-	return MC_SUCC;
+	return MC_ERR;
 }
 
 int listRequest(rio_t* rio,int connfd,int access)
