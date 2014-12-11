@@ -50,8 +50,16 @@ int main(int argc, char** argv){
 		fileNameLen++;
 	}
 
+	unsigned int datalen = 0;
+	char * data;
+	int result = mycloud_getfile(MachineName,TCPport,SecretKey,Filename,&data, &datalen);
 
-	fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
+	if(!result)
+		result = Fwrite(data,sizeof(char),datalen,stdout) - datalen;
+	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
+	if (result != 0)
+		printf("Error\n");
+	
 	return 0;
 }

@@ -812,6 +812,28 @@ int Open_listenfd(int port)
 }
 
 
+void sendKeyAndReqType(rio_t * rio,int clientfd, unsigned int SecretKey, unsigned int requestType){
+    char* sendData;
+
+    unsigned int sendLen;
+     //send 8 byte key + req
+    sendLen = MC_NUM_SIZE*2;
+    sendData = (char*)Malloc(sendLen);
+
+
+    netByte = htonl(SecretKey);
+    char* pSendData = sendData;
+    memcpy(pSendData,&netByte,MC_NUM_SIZE);
+    pSendData += MC_NUM_SIZE;
+
+    netByte = htonl(requestType);
+    memcpy(pSendData,&netByte,MC_NUM_SIZE);
+    pSendData +=MC_NUM_SIZE;
+
+    Rio_writen(clientfd,sendData,sendLen);
+    
+}
+
 int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char *data, unsigned int datalen){
 
     int clientfd;
@@ -823,27 +845,11 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     Rio_readinitb(&rio, clientfd);
     
-    char* sendData;
+    char* sendData,*pSendData;
 
     unsigned int sendLen;
 
-    //send 8 byte key + req
-    sendLen = MC_NUM_SIZE*2;
-    sendData = (char*)Malloc(sendLen);
-
-
-    netByte = htonl(SecretKey);
-    char* pSendData = sendData;
-    memcpy(pSendData,&netByte,MC_NUM_SIZE);
-    pSendData += MC_NUM_SIZE;
-    
-    unsigned int requestType = MC_PUT;
-
-    netByte = htonl(requestType);
-    memcpy(pSendData,&netByte,MC_NUM_SIZE);
-    pSendData +=MC_NUM_SIZE;
-
-    Rio_writen(clientfd,sendData,sendLen);
+    sendKeyAndReqType(&rio,clientfd,SecretKey,MC_PUT);
 
 
     sendLen = MC_MAX_FILE_NAME_SIZE + MC_NUM_SIZE;
@@ -881,22 +887,181 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     unsigned int result = ntohl(netByte);
 
+    Close(clientfd);
+    Free(sendData);
+    Free(buf);
 
 #ifdef MC_DEBUG
     fprintf(stderr, "Finsiehd recv and result was %u\n",result);
 #endif    
 
-    if (result == -1){
+    if (result == MC_ERR){
 #ifdef MC_DEBUG
         fprintf(stderr,"The operation have failed\n");
 #endif
-        return -1;
+        return MC_ERR;
     }
+    
+    return MC_SUCC;   
+}
+
+int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char *data, unsigned int* datalen){
+
+    unsigned int result = MC_SUCC;
+    int clientfd;
+    
+    unsigned int netByte;    
+    rio_t rio;
+
+    clientfd = Open_clientfd(MachineName,TCPport);
+
+    Rio_readinitb(&rio, clientfd);
+
+    sendKeyAndReqType(&rio,clientfd,SecretKey,MC_GET);
+
+    char* sendData,*pSendData;
+    unsigned int sendLen;
+
+    sendLen = MC_MAX_FILE_NAME_SIZE;
+    sendData = (char*)Malloc(sendData,sendLen);
+    pSendData = sendData;
+    memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
+    Rio_writen(clientfd, sendData, sendLen);
+
+    #ifdef MC_DEBUG
+    fprintf(stderr, "Finshed send\n");
+#endif
+    void* buf;
+    
+    buf = (void*)Malloc(MC_NUM_SIZE);
+    
+
+    Rio_readnb(&rio,buf,MC_NUM_SIZE );
+
+    netByte = *((unsigned int *)buf);
+
+    unsigned int result = ntohl(netByte);
+
+
     Close(clientfd);
     Free(sendData);
     Free(buf);
-    return 0;   
+#ifdef MC_DEBUG
+    fprintf(stderr, "Finsiehd recv and result was %u\n",result);
+#endif    
+
+    if (result == MC_ERR){
+#ifdef MC_DEBUG
+        fprintf(stderr,"The operation have failed\n");
+#endif
+        return MC_ERR;
+    }
+
+    return result;
 }
+
+
+int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename){
+    unsigned int result = MC_SUCC;
+    int clientfd;
+    
+    unsigned int netByte;    
+    rio_t rio;
+
+    clientfd = Open_clientfd(MachineName,TCPport);
+
+    Rio_readinitb(&rio, clientfd);
+
+    sendKeyAndReqType(&rio,clientfd,SecretKey,MC_DEL);
+
+    char* sendData,*pSendData;
+    unsigned int sendLen;
+
+    sendLen = MC_MAX_FILE_NAME_SIZE;
+    sendData = (char*)Malloc(sendData,sendLen);
+    pSendData = sendData;
+    memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
+    Rio_writen(clientfd, sendData, sendLen);
+
+    #ifdef MC_DEBUG
+    fprintf(stderr, "Finshed send\n");
+#endif
+    void* buf;
+    
+    buf = (void*)Malloc(MC_NUM_SIZE);
+    
+
+    Rio_readnb(&rio,buf,MC_NUM_SIZE );
+
+    netByte = *((unsigned int *)buf);
+
+    unsigned int result = ntohl(netByte);
+
+
+    Close(clientfd);
+    Free(sendData);
+    Free(buf);
+#ifdef MC_DEBUG
+    fprintf(stderr, "Finsiehd recv and result was %u\n",result);
+#endif    
+
+    if (result == MC_ERR){
+#ifdef MC_DEBUG
+        fprintf(stderr,"The operation have failed\n");
+#endif
+        return MC_ERR;
+    }
+
+    return result;
+
+}
+
+int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *listbuf, int* listbuflen){
+    unsigned int result = MC_SUCC;
+    int clientfd;
+    
+    unsigned int netByte;    
+    rio_t rio;
+
+    clientfd = Open_clientfd(MachineName,TCPport);
+
+    Rio_readinitb(&rio, clientfd);
+
+    sendKeyAndReqType(&rio,clientfd,SecretKey,MC_DEL);
+
+    #ifdef MC_DEBUG
+    fprintf(stderr, "Finshed send\n");
+#endif
+    void* buf;
+    
+    buf = (void*)Malloc(MC_NUM_SIZE);
+    
+
+    Rio_readnb(&rio,buf,MC_NUM_SIZE );
+
+    netByte = *((unsigned int *)buf);
+
+    unsigned int result = ntohl(netByte);
+
+
+    Close(clientfd);
+    Free(sendData);
+    Free(buf);
+#ifdef MC_DEBUG
+    fprintf(stderr, "Finsiehd recv and result was %u\n",result);
+#endif    
+
+    if (result == MC_ERR){
+#ifdef MC_DEBUG
+        fprintf(stderr,"The operation have failed\n");
+#endif
+        return MC_ERR;
+    }
+
+    return result;
+
+}
+
 /* $end csapp.c */
 
 
