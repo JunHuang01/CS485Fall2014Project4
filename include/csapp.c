@@ -951,7 +951,7 @@ int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int Secret
         memcpy(&netByte,buf,MC_NUM_SIZE);
 
         *datalen = ntohl(netByte);
-        Rio_readnb(&rio,data,*datalen);
+        Rio_readnb(&rio,*data,*datalen);
     }
     Close(clientfd);
     Free(sendData);
