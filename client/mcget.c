@@ -54,12 +54,12 @@ int main(int argc, char** argv){
 	char * data;
 	int result = mycloud_getfile(MachineName,TCPport,SecretKey,Filename,&data, &datalen);
 
-	if(!result)
-		result = Fwrite(data,sizeof(char),datalen,stdout) - datalen;
+	
+	Fwrite(data,sizeof(char),datalen,stdout);
 	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
 	if (result != 0)
 		printf("Error\n");
-	
+
 	return 0;
 }
