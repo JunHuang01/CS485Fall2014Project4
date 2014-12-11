@@ -48,7 +48,7 @@ int getRequest(rio_t* rio,int connfd,int access)
 				memcpy(buf,&netByte,MC_NUM_SIZE);
 				Rio_writen(connfd,buf,MC_NUM_SIZE);
 
-				Rio_writen(connfd,currNode->Filedata,datalen);
+				Rio_writen(connfd,currNode->Filedata,currNode->datalen);
 
 				return MC_SUCC;
 			}
