@@ -4,6 +4,16 @@ struct MC_NODE * MC_HEAD;
 
 int delRequest(rio_t* rio,int connfd,int access)
 {
+	char buf[MC_NUM_SIZE];
+	unsigned int result = MC_SUCC;
+	unsigned int netByte;
+	unsigned int dataLen;
+
+	char uFilename[MC_MAX_FILE_NAME_SIZE];
+
+	Rio_readnb(rio, uFilename, MC_MAX_FILE_NAME_SIZE);
+	printf("Filename = %s\n",uFilename );
+
 	return MC_SUCC;
 }
 
@@ -16,6 +26,38 @@ int listRequest(rio_t* rio,int connfd,int access)
 
 int getRequest(rio_t* rio,int connfd,int access)
 {
+	char * buf;
+	unsigned int result = MC_SUCC;
+	unsigned int netByte;
+	unsigned int dataLen;
+
+	char uFilename[MC_MAX_FILE_NAME_SIZE];
+
+	Rio_readnb(rio, uFilename, MC_MAX_FILE_NAME_SIZE);
+	printf("Filename = %s\n",uFilename );
+
+	if(access){
+		struct MC_NODE * currNode = MC_HEAD;
+
+		while(currNode){
+
+			if(!strcmp(currNode->Filename,uFilename)){
+
+				netByte = htonl(currNode->datalen);
+				buf = (char*)Malloc(MC_NUM_SIZE);
+				memcpy(buf,&netByte,MC_NUM_SIZE);
+				Rio_writen(connfd,buf,MC_NUM_SIZE);
+
+				Rio_writen(connfd,currNode->Filedata,datalen);
+
+				return MC_SUCC;
+			}
+
+			currNode = currNode->next;
+		}
+	}
+	else
+		return MC_ERR;
 
 	return MC_SUCC;
 }
@@ -23,7 +65,7 @@ int getRequest(rio_t* rio,int connfd,int access)
 
 int putRequest(rio_t* rio,int connfd,int access)
 {
-	char buf[MC_NUM_SIZE];
+	char * buf;
 	unsigned int result = MC_SUCC;
 	unsigned int netByte;
 	unsigned int dataLen;
@@ -54,10 +96,13 @@ int putRequest(rio_t* rio,int connfd,int access)
 		memcpy(currNode->Filename,uFilename,MC_MAX_FILE_NAME_SIZE);
 		
 		MC_HEAD = currNode;
-
+		
+		buf = (char*) Malloc(MC_NUM_SIZE);
 	    netByte = htonl(result);
-	    memcpy(&buf,&netByte,MC_NUM_SIZE);
+	    memcpy(buf,&netByte,MC_NUM_SIZE);
 	    Rio_writen(connfd, buf, MC_NUM_SIZE);
+
+	    Free(buf);
 		return MC_SUCC;
 	}
 	else

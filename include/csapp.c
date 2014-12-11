@@ -839,7 +839,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     int clientfd;
     
-    unsigned int netByte;    
+    unsigned int netByte,result;    
     rio_t rio;
 
     clientfd = Open_clientfd(MachineName,TCPport);
@@ -877,16 +877,16 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 #ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
 #endif
-    void* buf;
+    char* buf;
     
-    buf = (void*)Malloc(MC_NUM_SIZE);
+    buf = (char*)Malloc(MC_NUM_SIZE);
     
 
     Rio_readnb(&rio,buf,MC_NUM_SIZE );
 
-    netByte = *((unsigned int *)buf);
+    memcpy(&netByte,buf,MC_NUM_SIZE);
 
-    unsigned int result = ntohl(netByte);
+    result = ntohl(netByte);
 
     Close(clientfd);
     Free(sendData);
@@ -932,18 +932,27 @@ int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     #ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
 #endif
-    void* buf;
+
+
+    char* buf;
     
-    buf = (void*)Malloc(MC_NUM_SIZE);
+    buf = (char*)Malloc(MC_NUM_SIZE);
     
 
     Rio_readnb(&rio,buf,MC_NUM_SIZE );
 
-    netByte = *((unsigned int *)buf);
+    memcpy(&netByte,buf,MC_NUM_SIZE);
 
     result = ntohl(netByte);
 
 
+    if(!result){
+        Rio_readnb(&rio,buf,MC_NUM_SIZE );
+        memcpy(&netByte,buf,MC_NUM_SIZE);
+
+        datalen = ntohl(netByte);
+        Rio_readnb(&rio,data,datalen);
+    }
     Close(clientfd);
     Free(sendData);
     Free(buf);
@@ -958,7 +967,7 @@ int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int Secret
         return MC_ERR;
     }
 
-    return result;
+    return datalen;
 }
 
 
@@ -987,14 +996,14 @@ int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     #ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
 #endif
-    void* buf;
+    char* buf;
     
-    buf = (void*)Malloc(MC_NUM_SIZE);
+    buf = (char*)Malloc(MC_NUM_SIZE);
     
 
     Rio_readnb(&rio,buf,MC_NUM_SIZE );
 
-    netByte = *((unsigned int *)buf);
+    memcpy(&netByte,buf,MC_NUM_SIZE);
 
     result = ntohl(netByte);
 
@@ -1033,14 +1042,14 @@ int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int Secr
     #ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
 #endif
-    void* buf;
+    char* buf;
     
-    buf = (void*)Malloc(MC_NUM_SIZE);
+    buf = (char*)Malloc(MC_NUM_SIZE);
     
 
     Rio_readnb(&rio,buf,MC_NUM_SIZE );
 
-    netByte = *((unsigned int *)buf);
+    memcpy(&netByte,buf,MC_NUM_SIZE);
 
     result = ntohl(netByte);
 
