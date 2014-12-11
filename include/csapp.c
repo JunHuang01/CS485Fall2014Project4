@@ -1037,7 +1037,7 @@ int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int Secr
 
     Rio_readinitb(&rio, clientfd);
 
-    sendKeyAndReqType(&rio,clientfd,SecretKey,MC_DEL);
+    sendKeyAndReqType(&rio,clientfd,SecretKey,MC_LIST);
 
     #ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
