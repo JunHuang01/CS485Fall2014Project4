@@ -43,8 +43,11 @@ int getRequest(rio_t* rio,int connfd,int access)
 
 			if(!strcmp(currNode->Filename,uFilename)){
 
-				netByte = htonl(currNode->datalen);
-				
+			    netByte = htonl(result);
+	    		memcpy(buf,&netByte,MC_NUM_SIZE);
+    			Rio_writen(connfd, buf, MC_NUM_SIZE);
+
+				netByte = htonl(currNode->datalen);				
 				memcpy(buf,&netByte,MC_NUM_SIZE);
 				Rio_writen(connfd,buf,MC_NUM_SIZE);
 
