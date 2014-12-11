@@ -51,7 +51,7 @@ int main(int argc, char** argv){
 	}
 
 	unsigned int datalen = 0;
-	char * data;
+	char * data = (char*)Malloc(MC_MAX_FILE_SIZE);
 	int result = mycloud_getfile(MachineName,TCPport,SecretKey,Filename,&data, &datalen);
 
 	
