@@ -231,7 +231,7 @@ void echo(int connfd,unsigned int secretKey){
     unsigned int netByte,result = MC_ERR;
 
     Rio_readinitb(&rio, connfd);
-#ifndef MC_DEBUG
+#ifdef MC_DEBUG
     fprintf(stderr,"Server Started reading\n");
 #endif
 
@@ -240,7 +240,7 @@ void echo(int connfd,unsigned int secretKey){
 
     //Recieve Access Key and Request type 8 byte.
     if(n = Rio_readnb(&rio, buf, recvLen) == recvLen){//line:netp:echo:eof
-#ifndef MC_DEBUG
+#ifdef MC_DEBUG
 	fprintf(stderr,"server received %d bytes\n", (int)n);
 #endif
 

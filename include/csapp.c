@@ -929,7 +929,7 @@ int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
     Rio_writen(clientfd, sendData, sendLen);
 
-    #ifdef MC_DEBUG
+#ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
 #endif
 
@@ -993,7 +993,7 @@ int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
     Rio_writen(clientfd, sendData, sendLen);
 
-    #ifdef MC_DEBUG
+#ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
 #endif
     char* buf;
@@ -1012,7 +1012,7 @@ int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     Free(sendData);
     Free(buf);
 #ifdef MC_DEBUG
-    fprintf(stderr, "Finsiehd recv and result was %u\n",result);
+    fprintf(stderr, "Finshed recv and result was %u\n",result);
 #endif    
 
     if (result == MC_ERR){
@@ -1039,7 +1039,7 @@ int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int Secr
 
     sendKeyAndReqType(&rio,clientfd,SecretKey,MC_LIST);
 
-    #ifdef MC_DEBUG
+#ifdef MC_DEBUG
     fprintf(stderr, "Finshed send\n");
 #endif
     char* buf;
