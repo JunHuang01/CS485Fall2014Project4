@@ -37,7 +37,7 @@ int main(int argc, char** argv){
 	fprintf(stderr, "The length of list is %u \n", listbuflen );
 #endif
 	
-	char* listbuf = plistbuf;
+	char* plistbuf = listbuf;
 	
 	while(listbuflen){
 
