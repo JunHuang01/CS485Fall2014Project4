@@ -55,7 +55,7 @@ int main(int argc, char** argv){
 	size_t datalen;
 
     datalen = Fread(buf,sizeof(char),MC_MAX_FILE_SIZE ,stdin);
-#ifndef MC_DEBUG
+#ifdef MC_DEBUG
 	fprintf(stderr, "The data length is %u \n",datalen );
 #endif
 	int res = mycloud_putfile(MachineName, TCPport, SecretKey, Filename, buf , (unsigned int)datalen);
