@@ -52,7 +52,7 @@ int main(int argc, char** argv){
 
 	int result = mycloud_delfile(MachineName, TCPport, SecretKey, Filename);
 
-	if (result != 0)
+	if (result < 0)
 		printf("Error\n");
 	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 

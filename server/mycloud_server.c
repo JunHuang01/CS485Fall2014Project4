@@ -102,7 +102,7 @@ int listRequest(rio_t* rio,int connfd,int access)
 		return MC_ERR;
 
 
-	return MC_SUCC;
+	return MC_ERR;
 }
 
 
@@ -140,11 +140,12 @@ int getRequest(rio_t* rio,int connfd,int access)
 
 			currNode = currNode->next;
 		}
+		return MC_ERR;
 	}
 	else
 		return MC_ERR;
 
-	return MC_SUCC;
+	return MC_ERR;
 }
 
 
