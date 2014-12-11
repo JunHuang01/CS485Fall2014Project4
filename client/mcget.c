@@ -58,8 +58,8 @@ int main(int argc, char** argv){
 	Fwrite(data,datalen,1,stdout);
 	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
 
-	if (result != 0)
-		printf("Error\n");
+	if (result < 0)
+		fprintf(stderr,"Error\n");
 
 	return 0;
 }
