@@ -26,7 +26,7 @@ int listRequest(rio_t* rio,int connfd,int access)
 
 int getRequest(rio_t* rio,int connfd,int access)
 {
-	char * buf;
+	char buf[MC_NUM_SIZE];
 	unsigned int result = MC_SUCC;
 	unsigned int netByte;
 	unsigned int dataLen;
@@ -65,7 +65,7 @@ int getRequest(rio_t* rio,int connfd,int access)
 
 int putRequest(rio_t* rio,int connfd,int access)
 {
-	char * buf;
+	char buf[MC_NUM_SIZE];
 	unsigned int result = MC_SUCC;
 	unsigned int netByte;
 	unsigned int dataLen;
@@ -97,12 +97,12 @@ int putRequest(rio_t* rio,int connfd,int access)
 		
 		MC_HEAD = currNode;
 		
-		buf = (char*) Malloc(MC_NUM_SIZE);
+		
 	    netByte = htonl(result);
 	    memcpy(buf,&netByte,MC_NUM_SIZE);
 	    Rio_writen(connfd, buf, MC_NUM_SIZE);
 
-	    Free(buf);
+	    
 		return MC_SUCC;
 	}
 	else
