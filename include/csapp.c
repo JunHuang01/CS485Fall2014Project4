@@ -978,7 +978,7 @@ int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     unsigned int sendLen;
 
     sendLen = MC_MAX_FILE_NAME_SIZE;
-    sendData = (char*)Malloc(sendData,sendLen);
+    sendData = (char*)Malloc(sendLen);
     pSendData = sendData;
     memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
     Rio_writen(clientfd, sendData, sendLen);
@@ -1045,7 +1045,6 @@ int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int Secr
 
 
     Close(clientfd);
-    Free(sendData);
     Free(buf);
 #ifdef MC_DEBUG
     fprintf(stderr, "Finsiehd recv and result was %u\n",result);
