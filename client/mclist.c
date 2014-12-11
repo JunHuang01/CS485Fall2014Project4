@@ -36,9 +36,18 @@ int main(int argc, char** argv){
 #ifdef MC_DEBUG
 	fprintf(stderr, "The length of list is %u \n", listbuflen );
 #endif
-	Fwrite(listbuf,listbuflen,1,stdout);
-	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
+	
+	
+	while(listbuflen){
 
+		Fwrite(plistbuf,MC_MAX_FILE_NAME_SIZE,1,stdout);
+		printf("\n");
+
+		listbuflen -= MC_MAX_FILE_NAME_SIZE;
+		plistbuf+= MC_MAX_FILE_NAME_SIZE;
+
+	//fprintf(stderr, "%s %u %u %s \n", MachineName, TCPport, SecretKey, Filename );
+	}
 	if (result != 0)
 		printf("Error\n");
 	Free(listbuf);
