@@ -905,7 +905,7 @@ int mycloud_putfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     return MC_SUCC;   
 }
 
-int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char *data, unsigned int* datalen){
+int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *Filename, char **data, unsigned int* datalen){
 
     unsigned int result = MC_SUCC;
     int clientfd;
@@ -923,7 +923,7 @@ int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int Secret
     unsigned int sendLen;
 
     sendLen = MC_MAX_FILE_NAME_SIZE;
-    sendData = (char*)Malloc(sendData,sendLen);
+    sendData = (char*)Malloc(sendLen);
     pSendData = sendData;
     memcpy(pSendData,Filename,MC_MAX_FILE_NAME_SIZE);
     Rio_writen(clientfd, sendData, sendLen);
@@ -940,7 +940,7 @@ int mycloud_getfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     netByte = *((unsigned int *)buf);
 
-    unsigned int result = ntohl(netByte);
+    result = ntohl(netByte);
 
 
     Close(clientfd);
@@ -995,7 +995,7 @@ int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
     netByte = *((unsigned int *)buf);
 
-    unsigned int result = ntohl(netByte);
+    result = ntohl(netByte);
 
 
     Close(clientfd);
@@ -1016,7 +1016,7 @@ int mycloud_delfile(char *MachineName, unsigned int TCPport, unsigned int Secret
 
 }
 
-int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char *listbuf, int* listbuflen){
+int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int SecretKey, char **listbuf, int* listbuflen){
     unsigned int result = MC_SUCC;
     int clientfd;
     
@@ -1041,7 +1041,7 @@ int mycloud_listfiles(char *MachineName, unsigned int TCPport, unsigned int Secr
 
     netByte = *((unsigned int *)buf);
 
-    unsigned int result = ntohl(netByte);
+    result = ntohl(netByte);
 
 
     Close(clientfd);
